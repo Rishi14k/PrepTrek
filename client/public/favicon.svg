@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#grad)" />
+  <!-- Graduation Cap -->
+  <path d="M32 16L14 26L32 36L50 26L32 16Z" fill="#ffffff" fill-opacity="0.95" />
+  <path d="M20 30.5V41C20 44.5 25.4 47 32 47C38.6 47 44 44.5 44 41V30.5" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+  <path d="M50 26V38" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Tassel knot -->
+  <circle cx="50" cy="38" r="2" fill="#ffffff" />
+</svg>

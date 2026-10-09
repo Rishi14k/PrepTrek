@@ -1,0 +1,18 @@
+{
+  "name": "preptrack-root",
+  "version": "1.0.0",
+  "description": "PrepTrack - Full-Stack Entrance Exam Performance Analytics Platform",
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build:client": "cd client && npm run build",
+    "test:server": "cd server && npm test",
+    "seed": "cd server && npm run seed",
+    "seed:demo": "cd server && npm run seed:demo"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
