@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Resolve API base URL dynamically for both local Vite proxy and deployed cloud backends (Render, Vercel)
 const getBaseUrl = () => {
-  const envUrl = import.meta.env.VITE_API_URL;
+  const envUrl = 'https://preptrek.onrender.com';
   if (envUrl) {
     const cleanUrl = envUrl.replace(/\/$/, '');
     return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
