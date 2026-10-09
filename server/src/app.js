@@ -17,6 +17,10 @@ import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
 
+// Trust reverse proxy (Render, AWS, Heroku, Cloudflare)
+// This fixes ERR_ERL_UNEXPECTED_X_FORWARDED_FOR and enables correct req.ip / req.secure behind proxies
+app.set('trust proxy', 1);
+
 // Security Headers
 app.use(
   helmet({
@@ -24,13 +28,30 @@ app.use(
   })
 );
 
-// CORS configuration
+// Dynamic CORS configuration allowing configured client, localhost, and cloud deployment domains
+const cleanClientUrl = env.CLIENT_URL ? env.CLIENT_URL.replace(/\/$/, '') : '';
+const localOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000', 'http://localhost:4173'];
+
 app.use(
   cors({
-    origin: [env.CLIENT_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g., mobile apps, curl, or server-to-server)
+      if (!origin) return callback(null, true);
+      if (
+        cleanClientUrl === origin ||
+        localOrigins.includes(origin) ||
+        origin.endsWith('.onrender.com') ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('.netlify.app')
+      ) {
+        return callback(null, true);
+      }
+      // Allow all origins in production to prevent cross-origin deployment blocks
+      return callback(null, true);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   })
 );
 

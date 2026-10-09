@@ -53,6 +53,8 @@ export const register = async (req, res) => {
       success: true,
       message: 'Account created successfully!',
       user: user.toJSON(),
+      token: accessToken,
+      accessToken,
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -66,8 +68,9 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const cleanEmail = email ? email.trim().toLowerCase() : '';
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({ email: cleanEmail });
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -97,6 +100,8 @@ export const login = async (req, res) => {
       success: true,
       message: `Welcome back, ${user.name}!`,
       user: user.toJSON(),
+      token: accessToken,
+      accessToken,
     });
   } catch (error) {
     console.error('Login error:', error);

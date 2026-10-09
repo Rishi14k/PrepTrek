@@ -48,6 +48,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await api.post('/auth/login', { email, password });
       if (res.data?.success) {
+        if (res.data.token || res.data.accessToken) {
+          localStorage.setItem('preptrack_token', res.data.token || res.data.accessToken);
+        }
         setUser(res.data.user);
         toast.success(res.data.message || 'Logged in successfully!');
         return { success: true };
@@ -63,6 +66,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await api.post('/auth/register', userData);
       if (res.data?.success) {
+        if (res.data.token || res.data.accessToken) {
+          localStorage.setItem('preptrack_token', res.data.token || res.data.accessToken);
+        }
         setUser(res.data.user);
         toast.success(res.data.message || 'Account created successfully!');
         return { success: true };
@@ -77,10 +83,12 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await api.post('/auth/logout');
+    } catch (err) {
+      // Ignore network errors on logout
+    } finally {
+      localStorage.removeItem('preptrack_token');
       setUser(null);
       toast.success('Logged out successfully.');
-    } catch (err) {
-      setUser(null);
     }
   };
 

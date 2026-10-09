@@ -14,9 +14,10 @@ const router = express.Router();
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // 20 requests per window
+  max: 50, // 50 requests per window
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false }, // Prevent crashing if reverse proxy headers vary
   message: {
     success: false,
     message: 'Too many authentication attempts. Please try again after 15 minutes.',
